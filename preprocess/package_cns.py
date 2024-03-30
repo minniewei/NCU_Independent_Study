@@ -5,9 +5,8 @@ from __future__ import absolute_import
 import argparse
 import glob
 import os
-import cPickle as pickle
+import pickle
 import random
-
 
 def pickle_examples(paths, train_path, val_path, train_val_split=0.1):
     """

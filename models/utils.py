@@ -4,7 +4,8 @@ from __future__ import absolute_import
 
 import scipy.misc as misc
 import numpy as np
-from cStringIO import StringIO
+from io import BytesIO, StringIO
+import imageio
 
 
 def pad_seq(seq, batch_size):
@@ -18,7 +19,7 @@ def pad_seq(seq, batch_size):
 
 
 def bytes_to_file(bytes_img):
-    return StringIO(bytes_img)
+    return BytesIO(bytes_img)
 
 
 def normalize_image(img):
@@ -30,7 +31,8 @@ def normalize_image(img):
 
 
 def read_split_image(img):
-    mat = misc.imread(img).astype(np.float)
+    # mat = misc.imread(img).astype(np.float)
+    mat = imageio.imread(img).astype(np.float)
     side = int(mat.shape[1] / 2)
     assert side * 2 == mat.shape[1]
     img_A = mat[:, :side]  # target

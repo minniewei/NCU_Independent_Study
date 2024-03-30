@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 from __future__ import absolute_import
+
 import tensorflow as tf
-import models.parser
+from models.parser import arg_parse
 from models.unet_onehot_cns_font_attention import UNet
 
 def main(_):
-    args = parser.arg_parse()
+    args = arg_parse()
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
 

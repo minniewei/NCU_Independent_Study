@@ -8,10 +8,10 @@ import scipy.misc as misc
 import os
 import time
 from collections import namedtuple
-from ops import conv2d, deconv2d, lrelu, fc, batch_norm, init_embedding, conditional_instance_norm, conv2d_sn
-from dataset_cns import TrainDataProvider, InjectDataProvider
-from utils import scale_back, merge, save_concat_images
-from transformer_modules import get_token_embeddings, ff, positional_encoding, multihead_attention
+from models.ops import conv2d, deconv2d, lrelu, fc, batch_norm, init_embedding, conditional_instance_norm, conv2d_sn
+from models.dataset_cns import TrainDataProvider, InjectDataProvider
+from models.utils import scale_back, merge, save_concat_images
+from models.transformer_modules import get_token_embeddings, ff, positional_encoding, multihead_attention
 
 # Auxiliary wrapper classes
 # Used to save handles(important nodes in computation graph) for later evaluation
@@ -406,6 +406,7 @@ class UNet(object):
     def restore_cns_encoder(self, model_dir):
         all_vars = tf.global_variables()
         cns_vars = [var for var in all_vars if "cns_encoder" in var.name]
+
         saver = tf.train.Saver(cns_vars)
 
         ckpt = tf.train.get_checkpoint_state(model_dir)
@@ -609,6 +610,7 @@ class UNet(object):
         # filter by one type of labels
         data_provider = TrainDataProvider(self.data_dir, filter_by=fine_tune)
         total_batches = data_provider.compute_total_batch_num(self.batch_size)
+        print("total_batch:"+str(total_batches))
         # val_batch_iter = data_provider.get_val_iter(self.batch_size, shuffle=False)
         # val_batch_iter = data_provider.get_val_iter_bk(self.batch_size, shuffle=False)
 
@@ -636,6 +638,7 @@ class UNet(object):
                 print("decay learning rate from %.5f to %.5f" % (current_lr, update_lr))
                 current_lr = update_lr
 
+            # train_batch_iter: <generator object get_batch_iter.<locals>.batch_iter at 0x7fb8f89d8bd0> 
             for bid, batch in enumerate(train_batch_iter):
                 counter += 1
                 cns, sequence_len, labels, batch_images = batch

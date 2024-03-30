@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 from __future__ import absolute_import
-import cPickle as pickle
+import pickle
 import numpy as np
 import random
 import os
-from utils import pad_seq, bytes_to_file, \
+from models.utils import pad_seq, bytes_to_file, \
     read_split_image, shift_and_resize_image, normalize_image
 
 
@@ -36,6 +36,7 @@ def get_batch_iter(examples, batch_size, augment):
     # batch size, thus comes the padding
     padded = pad_seq(examples, batch_size)
 
+    # img 為 byte 組成的資料
     def process(img):
         img = bytes_to_file(img)
         try:
