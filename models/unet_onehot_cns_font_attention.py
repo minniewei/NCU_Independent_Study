@@ -2,6 +2,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
+from PIL import Image
 import tensorflow as tf
 import numpy as np
 import scipy.misc as misc
@@ -396,7 +397,7 @@ class UNet(object):
     def restore_model(self, saver, model_dir):
 
         ckpt = tf.train.get_checkpoint_state(model_dir)
-
+        print()
         if ckpt:
             saver.restore(self.sess, ckpt.model_checkpoint_path)
             print("restored model %s" % model_dir)
@@ -463,7 +464,6 @@ class UNet(object):
         for bid, batch in enumerate(val_batch_iter):
             cns, sequence_len, labels, batch_images = batch
             fake_imgs, real_imgs, d_loss, g_loss, l1_loss = self.generate_fake_samples(batch_images, labels, cns, sequence_len)
-            # print(l1_loss)
             test.append(l1_loss)
         return sum(test)/len(test)
 
@@ -476,7 +476,6 @@ class UNet(object):
 
     def infer(self, source_obj, embedding_ids, model_dir, save_dir):
         source_provider = InjectDataProvider(source_obj)
-
         if isinstance(embedding_ids, int) or len(embedding_ids) == 1:
             embedding_id = embedding_ids if isinstance(embedding_ids, int) else embedding_ids[0]
             source_iter = source_provider.get_single_embedding_iter(self.batch_size, embedding_id)
@@ -496,9 +495,17 @@ class UNet(object):
         batch_buffer = list()
         for cns_code, seq_len, labels, source_imgs in source_iter:
             fake_imgs = self.generate_fake_samples(source_imgs, labels, cns_code, seq_len)[0]
-            img_path = os.path.join(save_dir, "inferred_%04d.jpg" % count)
-            misc.imsave(img_path, fake_imgs.squeeze())
-            count += 1
+            img_path = os.path.join(save_dir, "inferred_%04d.jpg" % count)            
+            # 測試
+            pixel_array = np.array(fake_imgs.squeeze()) * 255
+            pixel_array_one = pixel_array.astype(np.uint8)
+            for i in range(pixel_array_one.shape[0]):
+                count+=1
+                print(f'models/result/image_{count}.png')
+                img = Image.fromarray(pixel_array[i, :, :], mode='L')  # 'L' 表示灰度图像
+                img.save(f'models/result/image_{count}.png')  # 保存为 PNG 文件，文件名为 image_0.png, image_1.png, ...s
+            # misc.imsave(img_path, fake_imgs.squeeze())
+            # count += 1
         '''
         for labels, source_imgs in source_iter:
             fake_imgs = self.generate_fake_samples(source_imgs, labels)[0]

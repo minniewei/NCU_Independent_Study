@@ -15,6 +15,7 @@ class PickledImageProvider(object):
         self.examples = self.load_pickled_examples()
 
     def load_pickled_examples(self):
+        print(self.obj_path)
         with open(self.obj_path, "rb") as of:
             examples = list()
             while True:

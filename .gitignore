@@ -1,11 +1,9 @@
 __pycache__
 .vscode
 .DS_store
-# 日誌文件
-*.logs
-*.checkpoint
 *.ipynb_checkpoints
 models/logs/
 models/checkpoint/
 models/data/
 models/preprocess_data/
+models/result
