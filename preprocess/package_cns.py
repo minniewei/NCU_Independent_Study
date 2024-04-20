@@ -8,7 +8,7 @@ import os
 import pickle
 import random
 
-def pickle_examples(paths, train_path, val_path, train_val_split=0.1):
+def pickle_examples(paths, train_path, val_path, train_val_split=0.8):
     """
     Compile a list of examples into pickled format, so during
     the training, all io will happen in memory
@@ -16,6 +16,7 @@ def pickle_examples(paths, train_path, val_path, train_val_split=0.1):
     with open(train_path, 'wb') as ft:
         with open(val_path, 'wb') as fv:
             for p in paths:
+                print(len(paths))
                 cns_code = os.path.basename(p).split("_")[0]
                 label = int(os.path.basename(p).split("_")[1])
                 with open(p, 'rb') as f:
@@ -42,6 +43,6 @@ args = parser.parse_args()
 if __name__ == "__main__":
     train_path = os.path.join(args.save_dir, "cns_train.obj")
     val_path = os.path.join(args.save_dir, "cns_test.obj")
-    pickle_examples(sorted(glob.glob(os.path.join(args.dir, "*.jpg"))), train_path=train_path, val_path=val_path,
-                    train_val_split=args.split_ratio)
+    print(args.dir)
+    # pickle_examples(sorted(glob.glob(os.path.join(args.dir, "*.jpg"))), train_path=train_path, val_path=val_path,train_val_split=args.split_ratio)
 

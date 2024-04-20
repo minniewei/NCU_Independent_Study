@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 from __future__ import absolute_import
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 
 def batch_norm(x, is_training, epsilon=1e-5, decay=0.9, scope="batch_norm"):
-    return tf.contrib.layers.batch_norm(x, decay=decay, updates_collections=None, epsilon=epsilon,
-                                        scale=True, is_training=is_training, scope=scope)
+    return tf.layers.batch_normalization(x, momentum=decay, epsilon=epsilon,
+                                        scale=True, training=is_training, name=scope)
 
 
 def conv2d(x, output_filters, kh=5, kw=5, sh=2, sw=2, stddev=0.02, scope="conv2d"):

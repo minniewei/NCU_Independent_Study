@@ -2,10 +2,10 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-import scipy.misc as misc
 import numpy as np
 from io import BytesIO, StringIO
 import imageio
+from skimage.transform import resize
 
 
 def pad_seq(seq, batch_size):
@@ -42,7 +42,7 @@ def read_split_image(img):
 
 
 def read_split_image_rgb(img):
-    mat = misc.imread(img).astype(np.float)
+    mat = imageio.imread(img).astype(np.float)
     side = int(mat.shape[1] / 2)
     assert side * 2 == mat.shape[1]
     img_A = mat[:, :side]  # target
@@ -53,13 +53,13 @@ def read_split_image_rgb(img):
 
 def shift_and_resize_image(img, shift_x, shift_y, nw, nh):
     w, h = img.shape
-    enlarged = misc.imresize(img, [nw, nh])
+    enlarged = resize(img, output_shape=(nw, nh))
     return enlarged[shift_x:shift_x + w, shift_y:shift_y + h]
 
 
 def shift_and_resize_image_rgb(img, shift_x, shift_y, nw, nh):
     w, h, _ = img.shape
-    enlarged = misc.imresize(img, [nw, nh])
+    enlarged = resize(img, output_shape=(nw, nh))
     return enlarged[shift_x:shift_x + w, shift_y:shift_y + h]
 
 
@@ -80,7 +80,7 @@ def merge(images, size):
 
 def save_concat_images(imgs, img_path):
     concated = np.concatenate(imgs, axis=1)
-    misc.imsave(img_path, concated)
+    imageio.imwrite(img_path, concated)
 
 
 """

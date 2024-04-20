@@ -2,12 +2,10 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 from models.parser import arg_parse
 from models.unet_onehot_cns_font_attention import UNet
-import os
-os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 
 def main(_):
     args = arg_parse()
