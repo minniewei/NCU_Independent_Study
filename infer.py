@@ -2,7 +2,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
 from models.parser import arg_parse
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 from models.unet_onehot_cns_font_attention import UNet
 
 

@@ -32,7 +32,7 @@ def normalize_image(img):
 
 def read_split_image(img):
     # mat = misc.imread(img).astype(np.float)
-    mat = imageio.imread(img).astype(np.float)
+    mat = imageio.imread(img).astype(float)
     side = int(mat.shape[1] / 2)
     assert side * 2 == mat.shape[1]
     img_A = mat[:, :side]  # target

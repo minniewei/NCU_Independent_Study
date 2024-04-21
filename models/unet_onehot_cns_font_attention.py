@@ -153,7 +153,7 @@ class UNet(object):
             enc *= self.cns_embedding_size**0.5  # scale
 
             enc += positional_encoding(enc, self.font_len)
-            enc = tf.layers.dropout(enc, 0.3, training=True)
+            enc = tf.keras.layers.Dropout(rate=0.3)(enc, training=True)
 
             # Blocks
             for i in range(self.num_blocks):

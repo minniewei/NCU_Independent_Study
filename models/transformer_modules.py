@@ -85,7 +85,7 @@ def scaled_dot_product_attention(Q, K, V, key_masks,
         # outputs = mask(outputs, Q, K, type="query")
 
         # dropout
-        outputs = tf.layers.dropout(outputs, rate=dropout_rate, training=training)
+        outputs = tf.keras.layers.Dropout(rate=dropout_rate)(outputs, training=training)
 
         # weighted sum (context vectors)
         outputs = tf.matmul(outputs, V)  # (N, T_q, d_v)
@@ -162,9 +162,9 @@ def multihead_attention(queries, keys, values, key_masks,
     d_model = queries.get_shape().as_list()[-1]
     with tf.variable_scope(scope, reuse=tf.AUTO_REUSE):
         # Linear projections
-        Q = tf.layers.dense(queries, d_model, use_bias=True) # (N, T_q, d_model)
-        K = tf.layers.dense(keys, d_model, use_bias=True) # (N, T_k, d_model)
-        V = tf.layers.dense(values, d_model, use_bias=True) # (N, T_k, d_model)
+        Q = tf.keras.layers.Dense(units=d_model, use_bias=True)(queries)  # (N, T_q, d_model)
+        K = tf.keras.layers.Dense(units=d_model, use_bias=True)(keys)  # (N, T_k, d_model)
+        V = tf.keras.layers.Dense(units=d_model, use_bias=True)(values)  # (N, T_k, d_model)
 
         # Split and concat
         Q_ = tf.concat(tf.split(Q, num_heads, axis=2), axis=0) # (h*N, T_q, d_model/h)
@@ -196,10 +196,10 @@ def ff(inputs, num_units, scope="positionwise_feedforward"):
     '''
     with tf.variable_scope(scope, reuse=tf.AUTO_REUSE):
         # Inner layer
-        outputs = tf.layers.dense(inputs, num_units[0], activation=tf.nn.relu)
+        outputs = tf.keras.layers.Dense(units=num_units[0], activation=tf.nn.relu)(inputs)
 
         # Outer layer
-        outputs = tf.layers.dense(outputs, num_units[1])
+        outputs = tf.keras.layers.Dense(units=num_units[1])(outputs)
 
         # Residual connection
         outputs += inputs
