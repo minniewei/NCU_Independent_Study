@@ -3,9 +3,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 import numpy as np
-from io import BytesIO, StringIO
-import imageio
 from skimage.transform import resize
+from io import StringIO, BytesIO
+import imageio
+from PIL import Image
 
 
 def pad_seq(seq, batch_size):
@@ -17,10 +18,8 @@ def pad_seq(seq, batch_size):
     seq.extend(seq[:padded])
     return seq
 
-
 def bytes_to_file(bytes_img):
     return BytesIO(bytes_img)
-
 
 def normalize_image(img):
     """
@@ -29,9 +28,7 @@ def normalize_image(img):
     normalized = (img / 127.5) - 1.
     return normalized
 
-
 def read_split_image(img):
-    # mat = misc.imread(img).astype(np.float)
     mat = imageio.imread(img).astype(float)
     side = int(mat.shape[1] / 2)
     assert side * 2 == mat.shape[1]
@@ -42,7 +39,7 @@ def read_split_image(img):
 
 
 def read_split_image_rgb(img):
-    mat = imageio.imread(img).astype(np.float)
+    mat = imageio.imread(img).astype(float)
     side = int(mat.shape[1] / 2)
     assert side * 2 == mat.shape[1]
     img_A = mat[:, :side]  # target
@@ -53,13 +50,12 @@ def read_split_image_rgb(img):
 
 def shift_and_resize_image(img, shift_x, shift_y, nw, nh):
     w, h = img.shape
-    enlarged = resize(img, output_shape=(nw, nh))
+    enlarged = np.array(Image.fromarray(img).resize([nw, nh]))
     return enlarged[shift_x:shift_x + w, shift_y:shift_y + h]
-
 
 def shift_and_resize_image_rgb(img, shift_x, shift_y, nw, nh):
     w, h, _ = img.shape
-    enlarged = resize(img, output_shape=(nw, nh))
+    enlarged = np.array(Image.fromarray(img).resize([nw, nh]))
     return enlarged[shift_x:shift_x + w, shift_y:shift_y + h]
 
 

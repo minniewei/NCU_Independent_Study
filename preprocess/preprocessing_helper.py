@@ -3,13 +3,15 @@
 
 import os
 import pdb
+# 設定路徑
+import sys
+sys.path.append('/File/CalliGAN/NCU_Independent_Study/')
 
 import PIL
 import numpy as np
 from PIL import Image, ImageFont
 from PIL import ImageDraw
-
-from utils import save_concat_images
+from models.utils import save_concat_images
 
 CANVAS_SIZE = 256
 CHAR_SIZE = 256
@@ -17,7 +19,7 @@ EMBEDDING_DIM = 128
 
 
 def _draw_single_char(font, ch, width, height):
-    img = Image.new("L", (width, height), 255)
+    img = Image.new("L", (int(width), int(height)), 255)
     draw = ImageDraw.Draw(img)
     draw.text((0, 0), ch, fill=0, font=font)
     return img
@@ -26,7 +28,7 @@ def _draw_single_char(font, ch, width, height):
 def get_textsize(font, ch):
     img = Image.new("L", (1, 1), 255)
     draw = ImageDraw.Draw(img)
-    char_size = draw.textsize(ch, font=font)
+    char_size = draw.textlength(ch, font=font)
     return char_size
 
 
@@ -49,7 +51,8 @@ def draw_single_char(img, canvas_size, char_size):
 
 
 def draw_single_char_by_font(ch, font, canvas_size, char_size):
-    width, height = get_textsize(font, ch)
+    width = get_textsize(font, ch)
+    height = width
     char_img = _draw_single_char(font, ch, width, height)
 
     return draw_single_char(char_img, canvas_size, char_size)

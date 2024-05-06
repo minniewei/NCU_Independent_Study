@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*
 
 def get_cangjie(char):
-	cns_char = 'cns_char.txt'
+	cns_char = 'CNS.txt'
 	char_dict = dict()
 	with open(cns_char, 'rb') as f:
 		for line in f.readlines():
 			line = line.decode().strip()
-			split = line.split('\t')
+			split = line.split(',')
 			if len(split) == 2:
-				char_dict[split[1]] = split[0]
-
+				char_dict[split[0]] = split[1]
 	cns = char_dict.get(char)
 
 	cns_cangjie = 'CNS_cangjie.txt'
@@ -25,14 +24,14 @@ def get_cangjie(char):
 
 
 def get_component(char):
-	cns_char = 'cns_char.txt'
+	cns_char = 'CNS.txt'
 	char_dict = dict()
 	with open(cns_char, 'rb') as f:
 		for line in f.readlines():
 			line = line.decode().strip()
-			split = line.split('\t')
+			split = line.split(',')
 			if len(split) == 2:
-				char_dict[split[1]] = split[0]
+				char_dict[split[0]] = split[1]
 
 	cns = char_dict.get(char)
 

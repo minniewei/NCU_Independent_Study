@@ -7,3 +7,8 @@ models/checkpoint/
 models/data/
 models/preprocess_data/
 models/result
+preprocess/test/
+preprocess/result/
+pre
+losses.csv
+preprocess/SIMSUN.ttf

@@ -12,7 +12,7 @@ from char_info import get_component
 img_folder = sys.argv[1]      # img_folder: crawler
 dst_folder_all = sys.argv[2]  # img_all
 dst_folder_cns = sys.argv[3]  # img_all_cns
-src_font = "SimSun.ttf"
+src_font = "SIMSUN.ttf"
 
 def get_char(folder_name):
     char_list = []
@@ -25,11 +25,12 @@ def get_char(folder_name):
 
 def get_union_and_intersect(img_folder, folder_list):
     list0 = get_char(os.path.join(img_folder, folder_list[0]))
-    list1 = get_char(os.path.join(img_folder, folder_list[1]))
-    list2 = get_char(os.path.join(img_folder, folder_list[2]))
-
-    union_list = list(set(list0) | set(list1) | set(list2))
-    intersect_list = list(set(list0) & set(list1) & set(list2))
+    union_list = list(set(list0))
+    intersect_list = list(set(list0))
+    # list1 = get_char(os.path.join(img_folder, folder_list[1]))
+    # list2 = get_char(os.path.join(img_folder, folder_list[2]))
+    # union_list = list(set(list0) | set(list1) | set(list2))
+    # intersect_list = list(set(list0) & set(list1) & set(list2))
     return union_list, intersect_list
 
 """
@@ -104,8 +105,6 @@ def generatePairImg(selectedTestChar, save_folder_all, save_folder_cns, folder_l
                 calli_img = brightness.enhance(2.)
 
                 #get corresponding font image
-                #font_img = draw_single_char_by_font(substr, font, CANVAS_SIZE, CHAR_SIZE)
-                #im_AB = np.concatenate([font_img, char_img], 1)
                 together = draw_example_src_only(substr, font, calli_img, CANVAS_SIZE, CHAR_SIZE)
 
                 if substr in selectedTestChar:
@@ -125,7 +124,7 @@ def generatePairImg(selectedTestChar, save_folder_all, save_folder_cns, folder_l
                     f.write("cannot open image file %s \n" %(filename))
 
 
-folder_list = ['顏真卿', '柳公權', '歐陽詢']
+folder_list = ['word_pngs']
 union_list, intersect_list = get_union_and_intersect(img_folder, folder_list)
 print("union_list len: ", len(union_list))
 # union_list len:  6548

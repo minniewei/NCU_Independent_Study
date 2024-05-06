@@ -44,5 +44,5 @@ if __name__ == "__main__":
     train_path = os.path.join(args.save_dir, "cns_train.obj")
     val_path = os.path.join(args.save_dir, "cns_test.obj")
     print(args.dir)
-    # pickle_examples(sorted(glob.glob(os.path.join(args.dir, "*.jpg"))), train_path=train_path, val_path=val_path,train_val_split=args.split_ratio)
+    pickle_examples(sorted(glob.glob(os.path.join(args.dir, "*.jpg"))), train_path=train_path, val_path=val_path,train_val_split=args.split_ratio)
 
